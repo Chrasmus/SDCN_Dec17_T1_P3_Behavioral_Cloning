@@ -62,23 +62,30 @@ The model.py file contains the code for training and saving the convolution neur
 
 #### 1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24)
+I have used the Nvidia CNN model, using RELU layers to introduce nonlinearity (model.py lines 113-137)
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18).
+My model consists of a convolution neural network with 5x5 and 3x3 filter sizes and depths between 24 and 64.
+
+The data is normalized in the model using a Keras lambda layer (code line 116).
 
 #### 2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21).
+The model contains two Dropout layers in order to reduce overfitting (model.py lines 133 and 135).
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The model was trained and validated on three different data sets to ensure that the model was not overfitting (code line 28-55).
+* data set 1 : two laps of forward, slow center driving.
+* data set 2 : reverse drive from start to bridge and back again
+* data set 3 : same as no 2, but with a lot of recovery driving to learn how to handle recovery.
+
+The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track. When the model finally was finished, the the car went on test driving without errors for several hours on the easy track, that had been used to train the model.
 
 #### 3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 140).
 
 #### 4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ...
+Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road. The data set are described in section 2 (above).
 
 For details about how I created the training data, see the next section.
 

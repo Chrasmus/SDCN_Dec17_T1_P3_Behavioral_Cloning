@@ -1,6 +1,7 @@
 ### CHRASMUS (Claus H. Rasmussen)
 ### model.py
 ###
+### The code contains TODO comments to be further investigated
 
 ### IMPORT SECTION
 import time
@@ -50,7 +51,6 @@ with open('./Data3/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
     for line in reader:
         samples.append(line)
-
 print('Number of observations: ' + str(len(samples)))
 print(time.ctime())
 
@@ -70,18 +70,18 @@ def my_generator(samples, batch_size=32):
             images = []
             angles = []
             for batch_sample in batch_samples:
-                # commented code, not for use on a local Mac Pro
+                # commented code, for GPU processing on AWS, not used on local Mac Pro
                 #name = './IMG/'+batch_sample[0].split('/')[-1]
                 #center_image = cv2.imread(name)
                 center_image = cv2.imread(batch_sample[0])
                 # abandommed code, gave to many errors
-                # CHRASMUS : resizing to 64x64
+                # CHRASMUS : resizing to 64x64, not implemented
                 #image_array = cv2.resize(image_array, (64, 64))
                 # CHRASMUS : Make sure to use the RGB colorspace in the model.
                 center_image = cv2.cvtColor(center_image, cv2.COLOR_BGR2RGB)
                 center_angle = float(batch_sample[3])
                 # CHRASMUS : Use only 50 pct of images with low steering angle, less than 0.75
-                # this piece of code remove the biased 'driving straight' images
+                # this piece of code removes half off the biased 'driving straight' images
                 if center_angle >= 0.75:
                     chance = random.randint(1,100)
                     if chance <= 50:
@@ -104,8 +104,6 @@ def my_generator(samples, batch_size=32):
 ### CHRASMUS : commented malfunction code
 #def resize_img(input):
 #    return ktf.image.resize_images(input, (row, col))
-# DOESN'T WORK :-( re-size inside the model
-# model.add(Lambda(lambda x: resize_img(x)))
 
 # compile and train the model using the generator function
 train_generator = my_generator(train_samples, batch_size=32)
@@ -116,6 +114,8 @@ model = Sequential()
 
 ### CHRASMUS : Preprocess incoming data, centered around zero with small standard deviation
 model.add(Lambda(lambda x: x/127.5 - 1., input_shape=(160, 320, 3)))
+# DOESN'T WORK :-( re-size inside the model
+# model.add(Lambda(lambda x: resize_img(x)))
 ### CHRASMUS : trim image to only see section with road
 model.add(Cropping2D(cropping=((70,25),(0,0))))
 ### CHRASMUS : reduce the image size by half
