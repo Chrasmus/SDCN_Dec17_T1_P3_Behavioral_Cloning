@@ -25,13 +25,8 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
+[Ten_epochs]: Result_ten_epochs.png "10 epochs, not using a Generator"
+[Three_epochs]: Result_three_epochs.png "3 epochs, using a Generator"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -43,9 +38,9 @@ The goals / steps of this project are the following:
 
 My project includes the following files:
 * model.py containing the script to load images via a generator and to create and train the model
-* drive.py for driving the car in autonomous mode
-* model.h5 containing a trained convolution neural network
-* run1.mp4 containing a video of a succesful run using the trained cnn
+* drive.py for driving the car in autonomous mode (this file has not been modified)
+* model.h5 containing a trained convolution neural network (all augmentations etc. takes place here)
+* run1.mp4 containing a video of a succesful run using the trained CNN
 * writeup_report.md or writeup_report.pdf summarizing the results
 
 #### 2. Submission includes functional code
@@ -95,50 +90,89 @@ I spend a fair amount of time in the first place just to learn to drive the car 
 
 The overall strategy for deriving a model architecture was to use the LeNet CNN model, but I switched to the more complex Nvidia CNN model, mostly to get some experience with this model. And it turned out that it could manage the job of driving the car running only three epochs of training data.
 
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. This was the general picture when I ran the model for ten epochs:
+In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. This was the general picture when I ran the model for ten epochs (with images loaded into memory):
 
+Training ten epochs
+![alt text][Ten_epochs]
 
+The Validation Loss is constantly high, which may be caused by overfitting.
+To combat the overfitting, I therefore modified the model by adding two Dropout layers between two of the connected layers.
 
-To combat the overfitting, I modified the model so that ...
+The final model was created using only three epochs and loading the images via a Generator (which took an extraordinary amount of extra processing time) _and_ removing half of the images where the steering was < 0.75. Note to my self: as of writing this, I now see that I only looked at positive angles, should have processed negative low angles as well :-( Bummer, but it all went well even so :-)
 
-Then I ...
+Training three epochs
+![alt text][Three_epochs]
 
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
+The output from the model training is shown here - this took about 18 hours (**!**):
 
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
+(IntroToTensorFlow) claus-h-rasmussens-mac-pro:CarND-Behavioral-Cloning-P3 claushrasmussen$ python model.py
+Using TensorFlow backend.
+Number of observations: 14965
+Sun Dec 10 21:14:14 2017
+Number of observations: 17055
+Sun Dec 10 21:14:14 2017
+Number of observations: 18486
+Sun Dec 10 21:14:14 2017
+14788/14788 [==============================] - 21738s - loss: 0.0325 - val_loss: 0.0554
+Epoch 2/3
+14788/14788 [==============================] - 21567s - loss: 0.0111 - val_loss: 0.0522
+Epoch 3/3
+14788/14788 [==============================] - 21313s - loss: 0.0084 - val_loss: 0.0576
+Mon Dec 11 15:11:14 2017
+model saved
+
+It can bee seen that both the Loss and the Validation Loss are low, so the overfitting has been avoided in this model.
+
+**At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.**
+
 
 #### 2. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
-160x320x3-C24-C36-C48-C64-C64-100N-DO-50N-DO-10N-1N, with Relu activations
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
+The final model architecture (model.py lines 113-137) consisted of a implementation of the Nvidia convolution neural network with the following layers and layer sizes
+160x320x3-C24-C36-C48-C64-C64-100N-DO-50N-DO-10N-1N, with Relu activations.
 
-![alt text][image1]
+My final model consisted of the following layers:
+
+| Layer         		|     Description	        					|
+|:---------------------:|:---------------------------------------------:|
+| Input         		| 160x320x3 RGB image   							|
+| Convolution 5x5     	| 2x2 stride, VALID padding, 24 layers 	|
+| RELU					|												|
+| Convolution 5x5     	| 2x2 stride, VALID padding, 36 layers 	|
+| RELU					|												|
+| Convolution 5x5     	| 2x2 stride, VALID padding, 48 layers 	|
+| RELU					|												|
+| Convolution 3x3     	| 1x1 stride, VALID padding, 64 layers 	|
+| RELU					|												|
+| Convolution 3x3     	| 1x1 stride, VALID padding, 64 layers 	|
+| RELU					|												|
+| Flatten       |
+| Fully connected		| Output 100        									|
+| DropOut	      	|   				|
+| Fully connected		| Output 50        									|
+| DropOut	      	|   				|
+| Fully connected		| Output 10        									|
+| Fully connected		| Output 1        									|
+
 
 #### 3. Creation of the Training Set & Training Process
 
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
+The creation of the data sets used here is described in the text above.
 
-![alt text][image2]
+To augment the data sat, I also flipped images and angles i order to multiply the dataset with reversed driving data - this must be the first and most obvious augmentation method (model.py line 91 and 97). This resulted in a total of 36972 images (from the 18486 samples).
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
+The little rock on the road caused by using cv2.imread, that the color space changes from RGB to GBR gave me a lot of headache, resulting in the car driving into sands right after the brigde. Using cv2.cvtColor(center_image, cv2.COLOR_BGR2RGB) (model.py line 81) did the trick. Btw, I have not changes anything in drive.py, data augmentation etc. only takes place in model.py.
 
-![alt text][image3]
-![alt text][image4]
-![alt text][image5]
+The model seemed biased by too much 'driving straight' data, so I removed half of the images with steering angles < 0.75 (model.py line 85).
+From an inital amount of data 36972 I ended up training and validating on a total of 18485 samples, effectively reducing the data set by one third.
 
-Then I repeated this process on track two in order to get more data points.
-
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
-
-![alt text][image6]
-![alt text][image7]
-
-Etc ....
-
-After the collection process, I had X number of data points. I then preprocessed this data by ...
+I finally randomly shuffled the data set and put 20% of the data into a validation set.
 
 
-I finally randomly shuffled the data set and put Y% of the data into a validation set.
+#### 4. Final thoughts
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I have spend too much time learning how to do the task - I started out using Jupyter Notebook, which was in the beginning, but ended up making if more difficult than necessary to create the code in model.py, I think. I also should have read the discussions at the Udacity forum earlier in the process - I ended up reading almost every discussion in the search of specific answers instead of using the discussions as guide lines into solving this project.
+Anyway, I learned a lot along the way, and once again that it's almost all about the data, not so much the model. Well, it kind of has something to do with the model, but model building is actually the easy part here. Besides sleepless nights trying to figure out why I couldn't get past the sand barrier and the curves, I had a lot of fun. And learned a ton :-)
+
+
+Kind regards, Claus H. Rasmussen.
