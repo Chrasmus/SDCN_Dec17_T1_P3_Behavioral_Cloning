@@ -105,21 +105,21 @@ Training three epochs
 
 The output from the model training is shown here - this took about 18 hours (**!**):
 
-(IntroToTensorFlow) claus-h-rasmussens-mac-pro:CarND-Behavioral-Cloning-P3 claushrasmussen$ python model.py
-Using TensorFlow backend.
-Number of observations: 14965
-Sun Dec 10 21:14:14 2017
-Number of observations: 17055
-Sun Dec 10 21:14:14 2017
-Number of observations: 18486
-Sun Dec 10 21:14:14 2017
-14788/14788 [==============================] - 21738s - loss: 0.0325 - val_loss: 0.0554
-Epoch 2/3
-14788/14788 [==============================] - 21567s - loss: 0.0111 - val_loss: 0.0522
-Epoch 3/3
-14788/14788 [==============================] - 21313s - loss: 0.0084 - val_loss: 0.0576
-Mon Dec 11 15:11:14 2017
-model saved
+* (IntroToTensorFlow) claus-h-rasmussens-mac-pro:CarND-Behavioral-Cloning-P3 claushrasmussen$ python model.py
+* Using TensorFlow backend.
+* Number of observations: 14965
+* Sun Dec 10 21:14:14 2017
+* Number of observations: 17055
+* Sun Dec 10 21:14:14 2017
+* Number of observations: 18486
+* Sun Dec 10 21:14:14 2017
+* 14788/14788 [==============================] - 21738s - loss: 0.0325 - val_loss: 0.0554
+* Epoch 2/3
+* 14788/14788 [==============================] - 21567s - loss: 0.0111 - val_loss: 0.0522
+* Epoch 3/3
+* 14788/14788 [==============================] - 21313s - loss: 0.0084 - val_loss: 0.0576
+* Mon Dec 11 15:11:14 2017
+* model saved
 
 It can bee seen that both the Loss and the Validation Loss are low, so the overfitting has been avoided in this model.
 
