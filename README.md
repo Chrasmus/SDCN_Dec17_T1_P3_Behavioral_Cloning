@@ -87,17 +87,17 @@ The model used an adam optimizer, so the learning rate was not tuned manually (m
 
 Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road. The data set are described in section 2 (above).
 
-For details about how I created the training data, see the next section.
+I spend a fair amount of time in the first place just to learn to drive the car with the keyboard. I never succeed using the mouse to handle the car. It also took many recording sessions and failures before I had the three data sets, that were used to train this model. My lesson learned from the Traffic sign Classfication task was to create credible data, that were as unbiased as possible.
 
 ### Model Architecture and Training Strategy
 
 #### 1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to ...
+The overall strategy for deriving a model architecture was to use the LeNet CNN model, but I switched to the more complex Nvidia CNN model, mostly to get some experience with this model. And it turned out that it could manage the job of driving the car running only three epochs of training data.
 
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. This was the general picture when I ran the model for ten epochs:
 
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting.
+
 
 To combat the overfitting, I modified the model so that ...
 
@@ -110,7 +110,7 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 #### 2. Final Model Architecture
 
 The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
-
+160x320x3-C24-C36-C48-C64-C64-100N-DO-50N-DO-10N-1N, with Relu activations
 Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
 
 ![alt text][image1]
