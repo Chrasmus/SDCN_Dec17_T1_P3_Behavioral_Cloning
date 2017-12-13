@@ -77,15 +77,15 @@ The model was trained and validated on three different data sets to ensure that 
 * data set 2 : reverse drive from start to bridge and back again
 * data set 3 : same as no 2, but with a lot of recovery driving to learn how to handle recovery.
 
-Example of three images from a recovery atttempt. There are 1.1 and 2 seconds between the images, which are not cropped (this happens in a Lambda function inside the model):
+Example of three images from a recovery attempt. There are 1.1 and 2 seconds between the images, which are not cropped (this happens in a Lambda function inside the model):
 
-Recovery drive image 1:
+Recovery drive image 1 - driving center line in the curve:
 ![alt text][Recovery_img1]
 
-Recovery drive image 2:
+Recovery drive image 2 - steering shortly and hard towards the left curve side:
 ![alt text][Recovery_img2]
 
-Recovery drive image 3:
+Recovery drive image 3 - restore center driving pattern:
 ![alt text][Recovery_img3]
 
 
