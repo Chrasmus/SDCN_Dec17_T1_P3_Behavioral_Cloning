@@ -27,6 +27,11 @@ The goals / steps of this project are the following:
 
 [Ten_epochs]: Result_ten_epochs.png "10 epochs, not using a Generator"
 [Three_epochs]: Result_three_epochs.png "3 epochs, using a Generator"
+[Original_img]: Original_img.jpeg "Original, cropped image from drive training"
+[Reversed_img]: Reversed_img.jpg "Reversed, cropped image from drive training"
+[Recovery_img1]: center_2017_12_08_19_57_37_286.jpg "Recovery driving 1, uncropped"
+[Recovery_img2]: center_2017_12_08_19_57_38_334.jpg "Recovery driving 2, uncropped"
+[Recovery_img3]: center_2017_12_08_19_57_40_431.jpg "Recovery driving 3, uncropped"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -71,6 +76,18 @@ The model was trained and validated on three different data sets to ensure that 
 * data set 1 : two laps of forward, slow center driving.
 * data set 2 : reverse drive from start to bridge and back again
 * data set 3 : same as no 2, but with a lot of recovery driving to learn how to handle recovery.
+
+Example of three images from a recovery atttempt. There are 1.1 and 2 seconds between the images, which are not cropped (this happens in a Lambda function inside the model):
+
+Recovery drive image 1:
+![alt text][Recovery_img1]
+
+Recovery drive image 2:
+![alt text][Recovery_img2]
+
+Recovery drive image 3:
+![alt text][Recovery_img3]
+
 
 The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track. When the model finally was finished, the the car went on test driving without errors for several hours on the easy track, that had been used to train the model.
 
@@ -160,6 +177,12 @@ My final model consisted of the following layers:
 The creation of the data sets used here is described in the text above.
 
 To augment the data sat, I also flipped images and angles i order to multiply the dataset with reversed driving data - this must be the first and most obvious augmentation method (model.py line 91 and 97). This resulted in a total of 36972 images (from the 18486 samples).
+
+Example of original, cropped image:
+![alt text][Original_img]
+
+Example of reversed, cropped image:
+![alt text][Reversed_img]
 
 The little rock on the road caused by using cv2.imread, that the color space changes from RGB to GBR gave me a lot of headache, resulting in the car driving into sands right after the brigde. Using cv2.cvtColor(center_image, cv2.COLOR_BGR2RGB) (model.py line 81) did the trick. Btw, I have not changes anything in drive.py, data augmentation etc. only takes place in model.py.
 
