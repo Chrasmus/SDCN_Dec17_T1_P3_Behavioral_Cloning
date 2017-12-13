@@ -27,8 +27,8 @@ The goals / steps of this project are the following:
 
 [Ten_epochs]: Result_ten_epochs.png "10 epochs, not using a Generator"
 [Three_epochs]: Result_three_epochs.png "3 epochs, using a Generator"
-[Original_img]: Original_img.jpeg "Original, cropped image from drive training"
-[Reversed_img]: Reversed_img.jpg "Reversed, cropped image from drive training"
+[Original_img]: Original_img.jpg "Original, cropped image from drive training"
+[Reversed_img]: Reversed_img.jpeg "Reversed, cropped image from drive training"
 [Recovery_img1]: center_2017_12_08_19_57_37_286.jpg "Recovery driving 1, uncropped"
 [Recovery_img2]: center_2017_12_08_19_57_38_334.jpg "Recovery driving 2, uncropped"
 [Recovery_img3]: center_2017_12_08_19_57_40_431.jpg "Recovery driving 3, uncropped"
